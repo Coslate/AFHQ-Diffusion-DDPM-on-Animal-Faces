@@ -55,21 +55,14 @@ Choose split with `--data_class {cat|dog|wild|all}`.
 ### Noise schedule (cosine)
 We precompute per‑step coefficients using the **cosine** schedule and cache them as buffers:
 
-```
-alpha_bar_t = f(t) / f(0)
-f(t) = cos( ((t/T + s) / (1 + s)) * pi/2 )^2
-alpha_t = clip( alpha_bar_t / alpha_bar_{t-1}, 0.001, 1.0 )
-```
+![Noise Schedule](fig/noise_seheduling.png)
 
 Saved buffers in `diffusion.py`: `alpha_t`, `alpha_bar`, `sqrt_alpha_bar`, `sqrt_one_minus_alpha_bar`, and the posterior variance.
 
 ### Forward process q(x_t | x_0)
 Adds Gaussian noise in T steps:
 
-```
-x_t = sqrt(alpha_bar_t) * x_0 + sqrt(1 - alpha_bar_t) * eps,   eps ~ N(0, I)
-q(x_t | x_0) = N( sqrt(alpha_bar_t) * x_0, (1 - alpha_bar_t) * I )
-```
+![Forward Process](fig/forward.png)
 
 Implemented by `q_sample`.
 
@@ -82,21 +75,18 @@ Loss = L1( ε_θ(x_t, t), eps )
 
 L1 is stable and yields sharp results.
 
+### Training 
+
+![Training Algorighm](fig/training.png)
+
 ### Reverse process p_θ(x_{t-1} | x_t)
 Reconstruct a proxy `x0_hat` from the predicted noise:
 
-```
-x0_hat = ( x_t - sqrt(1 - alpha_bar_t) * ε_θ(x_t, t) ) / sqrt(alpha_bar_t)
-```
+![Reverse Process](fig/reverse_1.png)
 
 Then sample from the posterior (Gaussian) with mean and variance:
 
-```
-mu_t   = [ sqrt(alpha_t) * (1 - alpha_bar_{t-1}) / (1 - alpha_bar_t) ] * x_t
-       + [ sqrt(alpha_bar_{t-1}) * (1 - alpha_t) / (1 - alpha_bar_t) ] * x0_hat
-
-sigma2 = [ (1 - alpha_bar_{t-1}) / (1 - alpha_bar_t) ] * (1 - alpha_t)
-```
+![Reverse](fig/reverse_2.png)
 
 Implemented in `p_sample`.
 
@@ -105,6 +95,26 @@ Implemented in `p_sample`.
 2. For `t = T, ..., 1`:
    - predict `ε_θ(x_t, t)`, form `x0_hat`, compute `(mu_t, sigma_t^2)`, then sample `x_{t-1}`.
 3. Clamp to `[-1, 1]` and unnormalize to `[0, 1]`.
+
+![Sampling Algorith](fig/sampling.png)
+
+---
+
+## Evaluation: Fréchet Inception Distance (FID)
+
+**What it measures.** FID compares the distribution of **generated** images to the distribution of **real** images in a semantic feature space (Inception-V3 pool3, 2048-D). Each set of features is modeled as a Gaussian; FID is the Fréchet distance between those Gaussians. **Lower is better** (0 means identical distributions).
+
+**Definition.**
+\[
+\mathrm{FID}(\mathcal{X}_r,\mathcal{X}_g)
+= \|\mu_r-\mu_g\|_2^2 \;+\; \operatorname{Tr}\!\Big(\Sigma_r + \Sigma_g - 2(\Sigma_r \Sigma_g)^{1/2}\Big)
+\]
+where \(\mu_r,\Sigma_r\) (real) and \(\mu_g,\Sigma_g\) (generated) are the mean and covariance of 2048-D Inception features.
+
+**Implementation.** We use **[`clean-fid`](https://github.com/GaParmar/clean-fid)** to standardize preprocessing and feature extraction. In this repo:
+- Enable FID with `--fid` and set `--save_and_sample_every <K>`.
+- Every \(K\) steps the trainer saves a batch of generated samples to `results/<run>/sample_ddpm_*` and (if absent) creates a resized `val/` folder from the training split to match image size.
+- The scalar `fid` is logged to Weights & Biases (if enabled).
 
 ---
 
@@ -117,7 +127,6 @@ pip install -r requirements.txt
 # pip install torch torchvision clean-fid wandb tqdm pillow einops
 wandb login   # optional, for online logging
 ```
-
 ---
 
 ## Experiments (reproducible, independent)
@@ -133,7 +142,6 @@ Quick sanity‑check; expect **blurry cats** after a few hundred steps.
 python main.py \
   --train_steps 1000 \
   --save_and_sample_every 100 \
-  --fid False \
   --data_class cat \
   --data_path ./data/train \
   --image_size 32 --batch_size 32 \
@@ -179,7 +187,6 @@ Pushes detail and coherence.
 python main.py \
   --train_steps 10000 \
   --save_and_sample_every 1000 \
-  --fid False \
   --data_class cat \
   --data_path ./data/train \
   --image_size 32 --batch_size 32 \
@@ -221,8 +228,8 @@ Replace the placeholders below with artifacts from your runs.
 
 - Loss curve: ![Training Loss](results/exp_warmup/loss.png)
 - FID curve: ![FID](results/exp_fid/fid.png)
-- Samples @1k steps: ![Samples 1k](results/exp_warmup/warmup_10.png)
-- Samples @10k steps: ![Samples 10k](results/exp_long/long_10.png)
+- Samples @1k steps: ![Samples 1k](results/exp_warmup/warmup_sample_10.png)
+- Samples @10k steps: ![Samples 10k](results/exp_long/long_sample_10.png)
 - Forward process:
   - ![Forward](results/exp_vis/viz/forward.png)
 - Backward process:
