@@ -1,4 +1,4 @@
-# 🐾 AFHQ Diffusion: A Minimal DDPM on Animal Faces
+# 🐾 AFHQ Diffusion: A DDPM on Animal Faces
 
 A clean, reproducible PyTorch implementation of a **Denoising Diffusion Probabilistic Model (DDPM)** trained on **AFHQ** (cats / dogs / wildlife). This repo includes:
 
