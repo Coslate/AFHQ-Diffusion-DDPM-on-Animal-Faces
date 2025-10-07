@@ -49,7 +49,8 @@ Choose split with `--data_class {cat|dog|wild|all}`.
 - **Time embedding**: sinusoidal t‑embedding → 2‑layer MLP → FiLM‑style (scale, shift) into blocks.
 - **Attention**: lightweight / linear attention at multiple resolutions for long‑range interactions.
 - **Output**: predicts noise `eps = ε_θ(x_t, t)` with 3 channels (RGB).
-- `![Architecture Diagram](fig/unet_architecture.jpeg)`
+
+![Architecture Diagram](fig/unet_architecture.jpeg)
 
 ### Noise schedule (cosine)
 We precompute per‑step coefficients using the **cosine** schedule and cache them as buffers:
@@ -218,14 +219,14 @@ python main.py \
 
 Replace the placeholders below with artifacts from your runs.
 
-- Loss curve: `![Training Loss](results/exp_warmup/loss.png)`
-- FID curve: `![FID](results/exp_fid/fid.png)`
-- Samples @1k steps: `![Samples 1k](results/exp_warmup/warmup_10.png)`
-- Samples @10k steps: `![Samples 10k](results/exp_long/long_10.png)`
+- Loss curve: ![Training Loss](results/exp_warmup/loss.png)
+- FID curve: ![FID](results/exp_fid/fid.png)
+- Samples @1k steps: ![Samples 1k](results/exp_warmup/warmup_10.png)
+- Samples @10k steps: ![Samples 10k](results/exp_long/long_10.png)
 - Forward process:
-  - `![Forward](results/exp_vis/viz/forward.png)`
+  - ![Forward](results/exp_vis/viz/forward.png)
 - Backward process:
-  - `![Backward](results/exp_vis/viz/backward.png)`
+  - ![Backward](results/exp_vis/viz/backward.png)
 
 ---
 
