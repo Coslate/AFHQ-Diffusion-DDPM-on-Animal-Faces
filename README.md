@@ -12,7 +12,7 @@ A clean, reproducible PyTorch implementation of a **Denoising Diffusion Probabil
 
 ## Task
 
-Given 32×32 AFHQ images, learn a generative model that:
+Given 36×36 AFHQ images, learn a generative model that:
 - Denoises Gaussian noise into images through a reverse Markov chain
 - Visualizes the forward corruption and reverse denoising trajectories
 - Tracks training via loss, FID, and sample grids
@@ -22,7 +22,7 @@ Given 32×32 AFHQ images, learn a generative model that:
 ## Dataset
 
 - **Source**: AFHQ (subset).
-- **Resolution**: train at 32×32.
+- **Resolution**: train at 36×36.
 - **Folder layout**
 
 ```
