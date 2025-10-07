@@ -105,11 +105,12 @@ Implemented in `p_sample`.
 **What it measures.** FID compares the distribution of **generated** images to the distribution of **real** images in a semantic feature space (Inception-V3 pool3, 2048-D). Each set of features is modeled as a Gaussian; FID is the Fréchet distance between those Gaussians. **Lower is better** (0 means identical distributions).
 
 **Definition.**
-\[
+$$
 \mathrm{FID}(\mathcal{X}_r,\mathcal{X}_g)
-= \|\mu_r-\mu_g\|_2^2 \;+\; \operatorname{Tr}\!\Big(\Sigma_r + \Sigma_g - 2(\Sigma_r \Sigma_g)^{1/2}\Big)
-\]
-where \(\mu_r,\Sigma_r\) (real) and \(\mu_g,\Sigma_g\) (generated) are the mean and covariance of 2048-D Inception features.
+= \|\mu_r-\mu_g\|_2^2 \;+\; \mathrm{Tr}\!\big(\Sigma_r + \Sigma_g - 2(\Sigma_r \Sigma_g)^{1/2}\big)
+$$
+
+where $\mu_r,\Sigma_r$ (real) and $\mu_g,\Sigma_g$ (generated) are the mean and covariance of 2048-D Inception features.
 
 **Implementation.** We use **[`clean-fid`](https://github.com/GaParmar/clean-fid)** to standardize preprocessing and feature extraction. In this repo:
 - Enable FID with `--fid` and set `--save_and_sample_every <K>`.
@@ -228,8 +229,10 @@ Replace the placeholders below with artifacts from your runs.
 
 - Loss curve: ![Training Loss](results/exp_warmup/loss.png)
 - FID curve: ![FID](results/exp_fid/fid.png)
-- Samples @1k steps: ![Samples 1k](results/exp_warmup/warmup_sample_10.png)
-- Samples @10k steps: ![Samples 10k](results/exp_long/long_sample_10.png)
+- Samples @1k steps:
+  - ![Samples 1k](results/exp_warmup/warmup_sample_10.png)
+- Samples @10k steps:
+  - ![Samples 10k](results/exp_long/long_sample_10.png)
 - Forward process:
   - ![Forward](results/exp_vis/viz/forward.png)
 - Backward process:
