@@ -168,6 +168,16 @@ python main.py \
   --image_size 32 --batch_size 32 \
   --learning_rate 1e-3 --time_steps 50 --unet_dim 16 \
   --save_folder ./results/exp_fid
+
+python main.py \
+  --train_steps 10000 \
+  --save_and_sample_every 100 \
+  --fid \
+  --data_class cat \
+  --data_path ./data/train \
+  --image_size 32 --batch_size 32 \
+  --learning_rate 1e-3 --time_steps 50 --unet_dim 16 \
+  --save_folder ./results/exp_fid
 ```
 
 **Where to view results**
@@ -185,8 +195,9 @@ Pushes detail and coherence.
 ```bash
 python main.py \
   --train_steps 10000 \
-  --save_and_sample_every 1000 \
+  --save_and_sample_every 100 \
   --data_class cat \
+  --fid \
   --data_path ./data/train \
   --image_size 32 --batch_size 32 \
   --learning_rate 1e-3 --time_steps 50 --unet_dim 16 \
@@ -226,10 +237,18 @@ python main.py \
 Replace the placeholders below with artifacts from your runs.
 
 - Loss curve: ![Training Loss](results/exp_warmup/loss.png)
-- FID curve: ![FID](results/exp_fid/fid.png)
-- Samples @1k steps:
+- FID curve: 
+  - @1k steps
+    
+    - ![FID](results/exp_fid/fid.png)
+  - @10k steps
+
+    - ![FID](results/exp_fid/fid_long.png)
+- Samples @1k steps: FID = 150.85
+
   - ![Samples 1k](results/exp_warmup/warmup_sample_10.png)
-- Samples @10k steps:
+- Samples @10k steps: FID = 94.66
+
   - ![Samples 10k](results/exp_long/long_sample_10.png)
 - Forward process:
   - ![Forward](results/exp_vis/viz/forward.png)
