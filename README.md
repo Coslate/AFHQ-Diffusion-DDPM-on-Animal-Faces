@@ -106,7 +106,7 @@ Implemented in `p_sample`.
 
 **Definition.**
 
-$$\mathrm{FID}(\mathcal{X}_r,\mathcal{X}_g) = \lVert \mu_r-\mu_g \rVert_2^2 + \operatorname{Tr}\left(\Sigma_r + \Sigma_g - 2\,(\Sigma_r \Sigma_g)^{1/2}\right)$$
+$$\mathrm{FID}(\mathcal{X}_r,\mathcal{X}_g) = \lVert \mu_r-\mu_g \rVert_2^2 + \mathr{Tr}\left(\Sigma_r + \Sigma_g - 2\,(\Sigma_r \Sigma_g)^{1/2}\right)$$
 
 where $\mu_r,\Sigma_r$ (real) and $\mu_g,\Sigma_g$ (generated) are the mean and covariance of 2048-D Inception features.
 
