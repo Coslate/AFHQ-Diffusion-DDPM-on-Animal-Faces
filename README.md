@@ -105,10 +105,12 @@ Implemented in `p_sample`.
 **What it measures.** FID compares the distribution of **generated** images to the distribution of **real** images in a semantic feature space (Inception-V3 pool3, 2048-D). Each set of features is modeled as a Gaussian; FID is the Fréchet distance between those Gaussians. **Lower is better** (0 means identical distributions).
 
 **Definition.**
-$$
+
+$
 \mathrm{FID}(\mathcal{X}_r,\mathcal{X}_g)
-= \|\mu_r-\mu_g\|_2^2 \;+\; \mathrm{Tr}\!\big(\Sigma_r + \Sigma_g - 2(\Sigma_r \Sigma_g)^{1/2}\big)
-$$
+= \lVert \mu_r-\mu_g \rVert_2^2
++ \mathrm{Tr}\!\left(\Sigma_r + \Sigma_g - 2\,(\Sigma_r \Sigma_g)^{1/2}\right)
+$
 
 where $\mu_r,\Sigma_r$ (real) and $\mu_g,\Sigma_g$ (generated) are the mean and covariance of 2048-D Inception features.
 
