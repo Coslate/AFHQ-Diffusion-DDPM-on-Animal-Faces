@@ -21,7 +21,7 @@ Given 36×36 AFHQ images, learn a generative model that:
 
 ## Dataset
 
-- **Source**: AFHQ (subset).
+- **Source**: AFHQ dataset (**[`LINK`](https://github.com/clovaai/stargan-v2/blob/master/README.md#animal-faces-hq-dataset-afhq)**).
 - **Resolution**: train at 36×36.
 - **Folder layout**
 
